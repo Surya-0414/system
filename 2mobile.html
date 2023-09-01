@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Country-based Phone Input Validation</title>
+  <!-- Include the intlTelInput stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
+</head>
+<body>
+  <!-- First set of input fields -->
+  <div>
+    <input type="tel" id="phoneInputField1">
+    <p id="errorText1" style="color: red;"></p>
+  </div>
+
+  <!-- Second set of input fields -->
+  <div>
+    <input type="tel" id="phoneInputField2">
+    <p id="errorText2" style="color: red;"></p>
+  </div>
+
+  <!-- Include the intlTelInput library and utilsScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+
+  <!-- Your JavaScript code -->
+  <script>
+    function getIp(callback) {
+      fetch('https://ipinfo.io/json?token=<your token>', { headers: { 'Accept': 'application/json' }})
+        .then((resp) => resp.json())
+        .catch(() => {
+          return {
+            country: 'us',
+          };
+        })
+        .then((resp) => callback(resp.country));
+    }
+
+    const phoneInputField1 = document.querySelector('#phoneInputField1');
+    const errorText1 = document.querySelector('#errorText1');
+    const phoneInput1 = window.intlTelInput(phoneInputField1, {
+      initialCountry: "auto",
+      geoIpLookup: getIp,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+    phoneInputField1.addEventListener('input', function () {
+      const selectedCountryData = phoneInput1.getSelectedCountryData();
+      const isValid = phoneInput1.isValidNumber();
+      
+      if (isValid && selectedCountryData) {
+        errorText1.textContent = '';
+        phoneInputField1.setCustomValidity('');
+      } else {
+        errorText1.textContent = 'Invalid phone number';
+        phoneInputField1.setCustomValidity('Invalid phone number');
+      }
+    });
+
+    const phoneInputField2 = document.querySelector('#phoneInputField2');
+    const errorText2 = document.querySelector('#errorText2');
+    const phoneInput2 = window.intlTelInput(phoneInputField2, {
+      initialCountry: "auto",
+      geoIpLookup: getIp,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+    phoneInputField2.addEventListener('input', function () {
+      const selectedCountryData = phoneInput2.getSelectedCountryData();
+      const isValid = phoneInput2.isValidNumber();
+      
+      if (isValid && selectedCountryData) {
+        errorText2.textContent = '';
+        phoneInputField2.setCustomValidity('');
+      } else {
+        errorText2.textContent = 'Invalid phone number';
+        phoneInputField2.setCustomValidity('Invalid phone number');
+      }
+    });
+  </script>
+</body>
+</html>

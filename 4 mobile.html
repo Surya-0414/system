@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Country-based Phone Input Validation</title>
+  <!-- Include the intlTelInput stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
+</head>
+<body>
+  <!-- First set of input fields -->
+  <div>
+    <input type="tel" id="phoneInputField1">
+    <p id="errorText1" style="color: red;"></p>
+  </div>
+
+  <!-- Second set of input fields -->
+  <div>
+    <input type="tel" id="phoneInputField2">
+    <p id="errorText2" style="color: red;"></p>
+  </div>
+
+  <!-- Third set of input fields -->
+  <div>
+    <input type="tel" id="phoneInputField3">
+    <p id="errorText3" style="color: red;"></p>
+  </div>
+
+  <!-- Fourth set of input fields -->
+  <div>
+    <input type="tel" id="phoneInputField4">
+    <p id="errorText4" style="color: red;"></p>
+  </div>
+
+  <!-- Include the intlTelInput library and utilsScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+
+  <!-- Your JavaScript code -->
+  <script>
+    function getIp(callback) {
+      fetch('https://ipinfo.io/json?token=<your token>', { headers: { 'Accept': 'application/json' }})
+        .then((resp) => resp.json())
+        .catch(() => {
+          return {
+            country: 'us',
+          };
+        })
+        .then((resp) => callback(resp.country));
+    }
+
+    function setupPhoneInput(inputFieldId, errorTextId) {
+      const phoneInputField = document.querySelector(inputFieldId);
+      const errorText = document.querySelector(errorTextId);
+      const phoneInput = window.intlTelInput(phoneInputField, {
+        initialCountry: "auto",
+        geoIpLookup: getIp,
+        utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+      });
+
+      phoneInputField.addEventListener('input', function () {
+        const selectedCountryData = phoneInput.getSelectedCountryData();
+        const isValid = phoneInput.isValidNumber();
+        
+        if (isValid && selectedCountryData) {
+          errorText.textContent = '';
+          phoneInputField.setCustomValidity('');
+        } else {
+          errorText.textContent = 'Invalid phone number';
+          phoneInputField.setCustomValidity('Invalid phone number');
+        }
+      });
+    }
+
+    // Set up input fields and error messages for each set
+    setupPhoneInput('#phoneInputField1', '#errorText1');
+    setupPhoneInput('#phoneInputField2', '#errorText2');
+    setupPhoneInput('#phoneInputField3', '#errorText3');
+    setupPhoneInput('#phoneInputField4', '#errorText4');
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload and Display Image</title>
+   
+</head>
+<body>
+
+<div class="col-md-3 p-2">
+    <label for="validationDefaultUpload" class="form-label">Upload All Your Project Documents Here</label>
+    <div class="input-group">
+        <input type="file" class="form-control" id="validationDefaultUpload" aria-describedby="inputGroupPrepend2" required>
+    </div>
+</div>
+
+<div style="width: 150px;" id="imageContainer">
+    <!-- Placeholder for displaying uploaded image -->
+</div>
+
+<script>
+    // Get the file input element
+    const fileInput = document.getElementById('validationDefaultUpload');
+
+    // Get the image container
+    const imageContainer = document.getElementById('imageContainer');
+
+    // Event listener for file input change
+    fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0]; // Get the selected file
+
+        if (file) {
+            // Create a FileReader to read the selected file
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                // Create an image element
+                const img = document.createElement('img');
+                img.src = e.target.result; // Set the image source to the loaded data
+
+                // Apply styling to the image element
+                img.style.maxWidth = '100%'; // Adjust the desired maximum width
+
+                // Append the image to the container
+                imageContainer.innerHTML = ''; // Clear previous content
+                imageContainer.appendChild(img);
+            };
+
+            // Read the selected file as a data URL
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+</body>
+</html>

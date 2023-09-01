@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <div>
+        <h2>First Set</h2>
+        <label>
+            <input type="radio" name="choice1" value="yes" id="yesRadio1"> Yes
+        </label>
+        <br>
+        <label>
+            <input type="radio" name="choice1" value="no" id="noRadio1"> No
+        </label>
+    
+        <div id="formContainer1" class="hidden">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Job Title <span class="span-star">*</span></label>
+                <input type="text" class="form-control select-back-colour" id="exampleFormControlInput1" placeholder="Job Title" required>
+            </div>
+            <!-- gender -->
+            <label>
+                <input type="radio" name="gender" value="male">
+                Male
+            </label><br>
+    
+            <label>
+                <input type="radio" name="gender" value="female">
+                Female
+            </label><br>
+    
+            <label>
+                <input type="radio" name="gender" value="other">
+                Other
+            </label><br>
+    
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Year of Experience <span class="span-star">*</span></label>
+                <input type="number" class="form-control select-back-colour" id="exampleFormControlInput1" placeholder="" name="yearofexperience" required>
+            </div>
+        </div>
+    </div>
+    
+    <div>
+        <h2>Second Set</h2>
+        <label>
+            <input type="radio" name="choice2" value="yes" id="yesRadio2"> Yes
+        </label>
+        <br>
+        <label>
+            <input type="radio" name="choice2" value="no" id="noRadio2"> No
+        </label>
+    
+        <div id="formContainer2" class="hidden">
+            <!-- form content goes here -->
+        </div>
+    </div>
+    
+    <script>
+        function setupRadioListener(yesRadio, noRadio, formContainer) {
+            yesRadio.addEventListener("change", () => {
+                formContainer.classList.remove("hidden");
+            });
+    
+            noRadio.addEventListener("change", () => {
+                formContainer.classList.add("hidden");
+            });
+        }
+    
+        const yesRadio1 = document.getElementById("yesRadio1");
+        const noRadio1 = document.getElementById("noRadio1");
+        const formContainer1 = document.getElementById("formContainer1");
+        setupRadioListener(yesRadio1, noRadio1, formContainer1);
+    
+        const yesRadio2 = document.getElementById("yesRadio2");
+        const noRadio2 = document.getElementById("noRadio2");
+        const formContainer2 = document.getElementById("formContainer2");
+        setupRadioListener(yesRadio2, noRadio2, formContainer2);
+    </script>
+    
+</body>
+</html>

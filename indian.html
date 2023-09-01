@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Country-based Phone Input Validation</title>
+  <!-- Include the intlTelInput stylesheet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.min.css">
+</head>
+<body>
+  <!-- Create an input field for international phone numbers -->
+  <input type="tel" id="phoneInputField">
+  <p id="errorText" style="color: red;"></p>
+
+  <!-- Include the intlTelInput library and utilsScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script>
+
+  <!-- Your JavaScript code -->
+  <script>
+    function getIp(callback) {
+      fetch('https://ipinfo.io/json?token=<your token>', { headers: { 'Accept': 'application/json' }})
+        .then((resp) => resp.json())
+        .catch(() => {
+          return {
+            country: 'in', // Default to India
+          };
+        })
+        .then((resp) => callback(resp.country));
+    }
+
+    const phoneInputField = document.querySelector('#phoneInputField');
+    const errorText = document.querySelector('#errorText');
+    const phoneInput = window.intlTelInput(phoneInputField, {
+      initialCountry: "in", // Set the initial country code to India (+91)
+      geoIpLookup: getIp,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+    });
+
+    // Add an event listener to validate the phone number on input
+    phoneInputField.addEventListener('input', function () {
+      const selectedCountryData = phoneInput.getSelectedCountryData();
+      const isValid = phoneInput.isValidNumber();
+      
+      if (isValid && selectedCountryData) {
+        errorText.textContent = ''; // Clear error message
+        phoneInputField.setCustomValidity('');
+      } else {
+        errorText.textContent = 'Invalid phone number';
+        phoneInputField.setCustomValidity('Invalid phone number');
+      }
+    });
+  </script>
+</body>
+</html>
